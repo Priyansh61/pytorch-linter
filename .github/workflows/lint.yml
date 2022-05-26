@@ -101,7 +101,16 @@ jobs:
         run: |
           set -eux
           python torch/testing/_check_kernel_launches.py |& tee "${GITHUB_WORKSPACE}"/cuda_kernel_launch_checks.txt
-
+  quickcheck-windows:
+    name: quickcheck-windows
+    runs-on: windows-latest
+    steps:
+      - name: Ensure no trailing whitespace
+        if: always()
+        run: |
+          #this will raise a warning if a trailing whitespace is found and wont change the file
+          chmod +x github/workflows/pre-commithook.sh
+          ./github/workflows/pre-commithook.sh
   workflow-checks:
     name: workflow-checks
     runs-on: linux.20_04.4x
